@@ -3,8 +3,8 @@ import cv2
 import numpy as np
 from dataPath import DATA_PATH
 
-image = cv2.imread(DATA_PATH+"images/c.png", cv2.IMREAD_GRAYSCALE)
-image2 = cv2.imread(DATA_PATH+"images/c.png", 1)
+image = cv2.imread(DATA_PATH+"images/nature-640.jpg", cv2.IMREAD_GRAYSCALE)
+image2 = cv2.imread(DATA_PATH+"images/nature-640.jpg", 1)
 targetImage__ = cv2.imread(DATA_PATH+"images/target.png", cv2.IMREAD_GRAYSCALE)
 cv2.imshow("targetImage__", targetImage__)
 

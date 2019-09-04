@@ -1,8 +1,8 @@
 import numpy as np
 import cv2
 
-img_rgb = cv2.imread("data/images/c.PNG")
-img_gray = cv2.imread("data/images/c.PNG", 0)
+img_rgb = cv2.imread("data/images/nature-1920.jpg")
+img_gray = cv2.imread("data/images/nature-1920.jpg", 0)
 targetImage__ = cv2.imread("data/images/target.png", cv2.IMREAD_GRAYSCALE)
 cv2.imshow("oryginal", img_rgb)
 cv2.imshow("targetImage__", targetImage__)
@@ -46,7 +46,13 @@ result = hsvImage[:,:,2]
 kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(3,3))
 #result = cv2.dilate(img_gray, kernel)
 blurred = cv2.bilateralFilter(img_gray, d = 3, sigmaColor = 40, sigmaSpace = 5)
-result = first_der(blurred ) 
+
+kernel = np.array([[-1, -1, -1],[-1, 8, -1],[-1, -1, 0]], np.float32)
+kernel=1/2*kernel
+dst=cv2.filter2D(blurred,-1,kernel)
+
+
+result = first_der(dst ) 
 result = np.uint8(255*result)
 
 #Apply bilateralFilter

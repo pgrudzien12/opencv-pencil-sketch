@@ -56,7 +56,7 @@ plt.figure(figsize=(14, 6))
 plt.suptitle("Cartoonizing images", fontsize=14, fontweight='bold')
 
 # Load image:
-image = cv2.imread('data/images/c.PNG')
+image = cv2.imread('data/images/nature-640.jpg')
 
 # Call the created functions for sketching and cartoonizing images:
 custom_sketch_image = sketch_image(image)

@@ -43,26 +43,25 @@ matplotlib.rcParams['image.cmap'] = 'gray'
 def cartoonify(image, arguments=0):
     ### YOUR CODE HERE
     img_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    blurred = cv2.medianBlur(img_gray, 3)
+    edges = cv2.adaptiveThreshold(blurred, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 9, 9)
 
-    blurred = cv2.GaussianBlur(img_gray, (3,3), 7)
-    lapl = cv2.Laplacian(blurred, cv2.CV_8U, ksize=3, scale=2, delta = 1)
-                    
-    _, dst = cv2.threshold(lapl, 15, 255, cv2.THRESH_BINARY)
-    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3,3))
-    dst = cv2.erode(dst, kernel)
-    dst = cv2.dilate(dst, kernel)
-    return cv2.cvtColor(255-dst, cv2.COLOR_GRAY2BGR)
+    color = cv2.bilateralFilter(image, 30, 80, 80)
+    contours = pencilSketch(image)
+    return cv2.bitwise_and(color, color, mask = contours[:,:,0])
 
 
 # In[34]:
 
 
 def pencilSketch(image, arguments=0):
-    
-    ### YOUR CODE HERE
+    img_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-    pencilSketchImage = image
-    return pencilSketchImage
+    blurred = cv2.GaussianBlur(img_gray, (5,5), 1.5)
+    lapl = cv2.Laplacian(blurred, cv2.CV_8U, ksize=3, scale=2, delta = 1)
+    _, dst = cv2.threshold(lapl, 16, 255, cv2.THRESH_BINARY)
+                    
+    return cv2.cvtColor(255-dst, cv2.COLOR_GRAY2BGR)
 
 
 # In[35]:
@@ -78,7 +77,7 @@ pencilSketchImage = pencilSketch(image)
 # In[36]:
 
 
-targetImg = cv2.imread("data/images/pencilSketch.jpg")
+targetImg = cv2.imread("data/images/cartoon.jpg")
 cv2.imshow('targetImg',targetImg)
 
 plt.figure(figsize=[20,10])
